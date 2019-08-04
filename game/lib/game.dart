@@ -7,6 +7,10 @@ import 'package:flame/position.dart';
 
 import 'camera.dart';
 import 'components/player.dart';
+import 'components/tilemap.dart';
+import 'direction.dart';
+import 'map_gen/dungeon.dart';
+import 'map_gen/generator.dart';
 import 'pages/page.dart';
 import 'pages/title_page.dart';
 import 'pallete.dart';
@@ -24,9 +28,16 @@ class MyGame extends BaseGame {
   Player player;
 
   MyGame() {
-    page = TitlePage(size);
+    page = TitlePage(this);
+    cameraHandler = Camera(this);
   }
 
+  void start() {
+    page = null;
+    Dungeon dungeon = Generator.randomMap(0);
+    add(Tilemap(dungeon.matrix));
+    add(player = Player(dungeon.initialPosition));
+  }
 
   @override
   void resize(Size rawSize) {
@@ -52,8 +63,8 @@ class MyGame extends BaseGame {
   }
 
   void recalculateScaleFactor(Size rawSize) {
-    int blocksWidth = 40;
-    int blocksHeight = 30;
+    int blocksWidth = 30;
+    int blocksHeight = 22;
 
     double width = blocksWidth * TILE_SIZE;
     double height = blocksHeight * TILE_SIZE;
@@ -76,6 +87,7 @@ class MyGame extends BaseGame {
         page.render(c);
       }
     } else {
+      c.drawRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Pallete.black.paint);
       super.render(c);
     }
   }
@@ -85,11 +97,25 @@ class MyGame extends BaseGame {
     if (page != null) {
       page.update(t);
     } else {
+      cameraHandler?.handle(t);
       super.update(t);
     }
   }
 
   void pause() {
     // TODO
+  }
+
+  void move(Direction d) {
+    page?.move(d);
+    player?.move(d);
+  }
+
+  void attack(Direction d) {
+    player?.attack(d);
+  }
+
+  void select() {
+    page?.select();
   }
 }

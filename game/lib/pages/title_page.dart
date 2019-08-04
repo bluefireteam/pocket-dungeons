@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 
+import '../direction.dart';
+import '../game.dart';
 import '../pallete.dart';
 import '../utils.dart';
 import 'page.dart';
@@ -13,7 +16,7 @@ class TitlePage extends Page {
   static const List<String> menuItems = ['play', 'config', 'quit'];
   int selectedIdx;
 
-  TitlePage(Size size) : super(size) {
+  TitlePage(MyGame game) : super(game) {
     selectedIdx = 0;
   }
 
@@ -37,18 +40,23 @@ class TitlePage extends Page {
   }
 
   @override
-  void up() {
-    selectedIdx = (selectedIdx + menuItems.length - 1) % menuItems.length;
-  }
-
-  @override
-  void down() {
-    selectedIdx = (selectedIdx + 1) % menuItems.length;
+  void move(Direction d) {
+    if (d == Direction.UP) {
+      selectedIdx = (selectedIdx + menuItems.length - 1) % menuItems.length;
+    } else if (d == Direction.DOWN) {
+      selectedIdx = (selectedIdx + 1) % menuItems.length;
+    }
   }
 
   @override
   void select() {
-    print('todo $selectedIdx');
+    if (selectedIdx == 0) {
+      gameRef.start();
+    } else if (selectedIdx == 1) {
+      // TODO config
+    } else if (selectedIdx == 2) {
+      exit(0);
+    }
   }
 
   @override

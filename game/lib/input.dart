@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import 'direction.dart';
 import 'game.dart';
 
 class Input {
@@ -17,42 +18,28 @@ class Input {
       final keyLabel = e.data.logicalKey.keyLabel;
       int keyId = e.data.logicalKey.keyId;
 
+      if (!isButtonDown) {
+        return;
+      }
+
       if (keyLabel == "w") {
-        if (gameRef.page != null) {
-          if (isButtonDown) {
-            gameRef.page.up();
-          }
-        } else {
-          // TODO
-        }
+        gameRef.move(Direction.UP);
       } else if (keyLabel == "a") {
-        // TODO
+        gameRef.move(Direction.LEFT);
       } else if (keyLabel == "s") {
-        if (gameRef.page != null) {
-          if (isButtonDown) {
-            gameRef.page.down();
-          }
-        } else {
-          // TODO
-        }
+        gameRef.move(Direction.DOWN);
       } else if (keyLabel == "d") {
-        // TODO        
+        gameRef.move(Direction.RIGHT);
       } else if (keyLabel == "i") {
-        // TODO
+        gameRef.attack(Direction.UP);
       } else if (keyLabel == "j") {
-        // TODO
+        gameRef.attack(Direction.LEFT);
       } else if (keyLabel == "k") {
-        // TODO
+        gameRef.attack(Direction.DOWN);
       } else if (keyLabel == "l") {
-        // TODO
+        gameRef.attack(Direction.RIGHT);
       } else if (keyId == ENTER_KEY_ID) {
-        if (gameRef.page != null) {
-          if (isButtonDown) {
-            gameRef.page.select();
-          }
-        } else {
-          // TODO
-        }
+        gameRef.select();
       }
     });
   }
