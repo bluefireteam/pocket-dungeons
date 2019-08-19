@@ -4,6 +4,7 @@ import 'package:flame/components/component.dart';
 import 'package:flame/position.dart';
 import 'package:flame/sprite.dart';
 
+import '../engine/matrix.dart';
 import '../utils.dart';
 
 class Tilemap extends Component {
@@ -15,20 +16,17 @@ class Tilemap extends Component {
     2: gen(2, 0),
   };
 
-  List<List<int>> matrix;
+  Matrix<int> matrix;
 
   Tilemap(this.matrix);
 
   @override
   void render(Canvas c) {
-    for (int i = 0; i < matrix.length; i++) {
-      for (int j = 0; j < matrix[i].length; j++) {
-        int block = matrix[i][j];
-        if (block != 0) {
-          blockSprites[block].renderPosition(c, Position(TILE_SIZE * j, TILE_SIZE * i));
-        }
+    matrix.forEach((i, j, block) {
+      if (block != 0) {
+        blockSprites[block].renderPosition(c, Position(TILE_SIZE * j, TILE_SIZE * i));
       }
-    }
+    });
   }
 
   @override
