@@ -1,0 +1,3 @@
+enum ActionType {
+  ATTACK, MOVE
+}

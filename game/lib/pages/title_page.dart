@@ -5,7 +5,7 @@ import 'package:flame/anchor.dart';
 import 'package:flame/position.dart';
 import 'package:flame/text_config.dart';
 
-import '../direction.dart';
+import '../engine/direction.dart';
 import '../game.dart';
 import '../pallete.dart';
 import '../utils.dart';

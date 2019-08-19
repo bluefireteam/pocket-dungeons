@@ -1,12 +1,10 @@
-import 'package:flame/position.dart';
-
-import '../utils.dart';
+import '../engine/coords.dart';
+import 'enemy_type.dart';
 
 class Dungeon {
   List<List<int>> matrix;
-  List<int> initialCoords;
+  Coords initialCoords;
+  Map<Coords, EnemyType> enemies;
 
-  Dungeon(this.matrix, this.initialCoords);
-
-  Position get initialPosition => Position(TILE_SIZE * initialCoords[0], TILE_SIZE * initialCoords[1]);
+  Dungeon(this.matrix, this.initialCoords, this.enemies);
 }

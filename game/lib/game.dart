@@ -1,22 +1,33 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:flame/components/component.dart';
 import 'package:flame/game.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/position.dart';
+import 'package:ordered_set/ordered_set.dart';
 
 import 'camera.dart';
 import 'components/player.dart';
 import 'components/tilemap.dart';
-import 'direction.dart';
+import 'components/zombie.dart';
+import 'engine/action.dart';
+import 'engine/action_type.dart';
+import 'engine/direction.dart';
+import 'engine/engine.dart';
 import 'map_gen/dungeon.dart';
 import 'map_gen/generator.dart';
 import 'pages/page.dart';
 import 'pages/title_page.dart';
 import 'pallete.dart';
+import 'queryable_ordered_set.dart';
 import 'utils.dart';
 
 class MyGame extends BaseGame {
+  QueryableOrderedSetImpl queryComponents = QueryableOrderedSetImpl();
+
+  @override
+  OrderedSet<Component> get components => queryComponents;
 
   Size rawSize, scaledSize;
   Position resizeOffset = Position.empty();
@@ -26,6 +37,7 @@ class MyGame extends BaseGame {
 
   Page page;
   Player player;
+  Engine engine;
 
   MyGame() {
     page = TitlePage(this);
@@ -34,9 +46,12 @@ class MyGame extends BaseGame {
 
   void start() {
     page = null;
-    Dungeon dungeon = Generator.randomMap(0);
+    math.Random r = math.Random();
+    Dungeon dungeon = Generator.randomMap(r, 0);
     add(Tilemap(dungeon.matrix));
-    add(player = Player(dungeon.initialPosition));
+    add(player = Player(dungeon.initialCoords));
+    dungeon.enemies.forEach((p, e) => add(Zombie(p)));
+    engine = Engine(r, this);
   }
 
   @override
@@ -107,12 +122,15 @@ class MyGame extends BaseGame {
   }
 
   void move(Direction d) {
-    page?.move(d);
-    player?.move(d);
+    if (page != null) {
+      page.move(d);
+    } else {
+      engine.queue(Action(ActionType.MOVE, d));
+    }
   }
 
   void attack(Direction d) {
-    player?.attack(d);
+    engine?.queue(Action(ActionType.ATTACK, d));
   }
 
   void select() {

@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-import 'direction.dart';
+import 'engine/direction.dart';
 import 'game.dart';
 
 class Input {

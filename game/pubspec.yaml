@@ -19,6 +19,7 @@ flutter:
   assets:
    - assets/images/tileset.png
    - assets/images/player.png
+   - assets/images/zombie.png
 
   fonts:
    - family: BitPotion

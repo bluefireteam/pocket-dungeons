@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import '../direction.dart';
+import '../engine/direction.dart';
 import '../game.dart';
 
 abstract class Page {
