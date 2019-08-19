@@ -121,16 +121,12 @@ class MyGame extends BaseGame {
     // TODO
   }
 
-  void move(Direction d) {
+  void act(Action action) {
     if (page != null) {
-      page.move(d);
+      page.move(action.direction);
     } else {
-      engine.queue(Action(ActionType.MOVE, d));
+      engine.queue(action);
     }
-  }
-
-  void attack(Direction d) {
-    engine?.queue(Action(ActionType.ATTACK, d));
   }
 
   void select() {

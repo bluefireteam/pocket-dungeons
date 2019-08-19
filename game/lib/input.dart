@@ -1,12 +1,14 @@
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart' hide Action;
 
+import 'engine/action.dart';
 import 'engine/direction.dart';
 import 'game.dart';
 
 class Input {
 
   static const ENTER_KEY_ID = 4295426088;
+  static const SPACE_KEY_ID = 32;
 
   MyGame gameRef;
 
@@ -18,26 +20,30 @@ class Input {
       final keyLabel = e.data.logicalKey.keyLabel;
       int keyId = e.data.logicalKey.keyId;
 
+      print(keyId);
+
       if (!isButtonDown) {
         return;
       }
 
       if (keyLabel == "w") {
-        gameRef.move(Direction.UP);
+        gameRef.act(Action.move(Direction.UP));
       } else if (keyLabel == "a") {
-        gameRef.move(Direction.LEFT);
+        gameRef.act(Action.move(Direction.LEFT));
       } else if (keyLabel == "s") {
-        gameRef.move(Direction.DOWN);
+        gameRef.act(Action.move(Direction.DOWN));
       } else if (keyLabel == "d") {
-        gameRef.move(Direction.RIGHT);
+        gameRef.act(Action.move(Direction.RIGHT));
       } else if (keyLabel == "i") {
-        gameRef.attack(Direction.UP);
+        gameRef.act(Action.attack(Direction.UP));
       } else if (keyLabel == "j") {
-        gameRef.attack(Direction.LEFT);
+        gameRef.act(Action.attack(Direction.LEFT));
       } else if (keyLabel == "k") {
-        gameRef.attack(Direction.DOWN);
+        gameRef.act(Action.attack(Direction.DOWN));
       } else if (keyLabel == "l") {
-        gameRef.attack(Direction.RIGHT);
+        gameRef.act(Action.attack(Direction.RIGHT));
+      } else if (keyId == SPACE_KEY_ID) {
+        gameRef.act(Action.idle());
       } else if (keyId == ENTER_KEY_ID) {
         gameRef.select();
       }

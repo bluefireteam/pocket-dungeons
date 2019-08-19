@@ -49,7 +49,7 @@ abstract class Actor extends PositionComponent {
   void step() {
     if (currentAction.type == ActionType.MOVE) {
       moveStep(currentAction.direction);
-    } else {
+    } else if (currentAction.type == ActionType.ATTACK) {
       attackStep(currentAction.direction);
     }
   }
@@ -67,7 +67,7 @@ abstract class Actor extends PositionComponent {
   void finish() {
     if (currentAction.type == ActionType.MOVE) {
       moveFinish(currentAction.direction);
-    } else {
+    } else if (currentAction.type == ActionType.ATTACK) {
       attackFinish(currentAction.direction);
     }
   }

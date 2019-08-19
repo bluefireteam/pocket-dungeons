@@ -1,3 +1,3 @@
 enum ActionType {
-  ATTACK, MOVE
+  ATTACK, MOVE, IDLE
 }
